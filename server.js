@@ -50,7 +50,7 @@ function insertAtIndex(origin, toInsert, index) {
   return origin.slice(0, index) + toInsert + origin.slice(index);
 }
 
-router.post('/parse', function (req, res) {
+router.post('/', function (req, res) {
   var form = formidable.IncomingForm();
   form.parse(req, function (err, fields, files) {
     // read in text.
