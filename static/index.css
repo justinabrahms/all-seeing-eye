@@ -12,3 +12,7 @@
 .pull-right {
   float: right;
 }
+
+.source-example {
+  display: none;
+}

@@ -90,6 +90,11 @@ function bindEvents () {
     });
   });
 
+  $('.js-example-redis').click(function (e) {
+    $('#source').text(
+      $('#node_redis__generate_commands').text());
+  });
+
   $('.js-add-rule').click(function (e) {
     var $rule = $('#rule') ;
     var rule = $rule.val();
