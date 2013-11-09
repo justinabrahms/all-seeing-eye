@@ -1,16 +1,11 @@
-.rule-form {
-  width: 587px;
-  float: left;
+.source-code {
+  font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+  font-size: 10px;
 }
 
-#rendered-code {
-  width: 580px;
-  float: left;
-  margin-left: 30px;
-}
-
-.pull-right {
-  float: right;
+#source-input {
+  width: 100%;
+  min-height: 200px;
 }
 
 .source-example {

@@ -2,83 +2,129 @@
 <html>
 
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mordor.js: One does not simply check in code</title>
-    <link href="/static/index.css" rel="stylesheet">
     <script src="/bower/jquery/jquery.js" type="text/javascript"></script>
     <script src="/bower/lodash/dist/lodash.js" type="text/javascript"></script>
     <script src="/static/index.js" type="text/javascript"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="/bower/bootstrap/dist/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="/bower/bootstrap/dist/css/bootstrap-theme.min.css">
+
+    <link href="/static/index.css" rel="stylesheet">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="/bower/bootstrap/dist/js/bootstrap.min.js"></script>
   </head>
 
   <body>
-    <h1>Regex builder for source code</h1>
-    <form method="post" action="/" class="rule-form">
-      <iframe src="http://nodeknockout.com/iframe/all-seeing-eye" frameborder=0 scrolling=no allowtransparency=true width=115 height=25>
-      </iframe>
-      <ul class="rule-list"></ul>
-      <h3>Example rules:</h3>
-      <ul class="example-rules">
-        <li><a href="javascript:void(0)" data-rule="variable > id">Variable Names</a></li>
-        <li><a href="javascript:void(0)" data-rule="call:contains(writeFile)">Calls to WriteFile</a></li>
-      </ul>
-      <label for="rule">Rule:</label><input type="text" id="rule" name="rule" value="<%- rule %>"/>
-      <input type="color" id="color" name="color"  />
-      <a class="btn js-add-rule">Add Rule</a>
-      <br />
-      <a class="js-example-redis" href="javascript:void(0);">Load Example Script</a>
-      <br />
-      <label for="source">Source Code</label>
-      &mdash;
-      <a class="btn js-parse">Parse</a><br />
-      <textarea rows="30" cols="80" id="source" name="source"><%= source %></textarea><br />
-    </form>
-    <pre id="rendered-code"><code>
-<%= code %>
-    </pre></code>
+    <div class="container">
+      
+      <div class="page-header">
+      <h1>
+        Mordor.js <small>One does not simply <em>check in code</em></small>
+        <iframe src="http://nodeknockout.com/iframe/all-seeing-eye" frameborder=0 scrolling=no allowtransparency=true width=115 height=25></iframe>
+      </h1>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <form method="post" action="/" class="rule-form" role="form">
+            <p class="example-rules">
+              Choose a CSS selector below and the color you'd like it to be highlighted as or try some examples: 
+              <a href="javascript:void(0)" data-rule="variable > id">highlight variable names</a> or
+              <a href="javascript:void(0)" data-rule="call:contains(writeFile)">higlight calls to writeFile</a>
+            </p>
+            <ul class="rule-list"></ul>
+            <div>
+              <div class="form-group">
+                <label for="rule">Selector</label>
+                <input class="form-control" type="text" id="rule" name="rule" value="<%- rule %>"/>
+              </div>
+              <button type="button" class="btn pull-right js-add-rule">Add Rule</button>
+              <div class="form-group">
+                <label for="color">Color</label>
+                <input type="color" id="color" name="color"  />
+              </div>
+            </div>
+          </form>
+          
+        </div>
+
+        <div class="col-md-8">
+          <ul class="nav nav-tabs">
+              <li><a data-toggle="tab" id="edit-tab" href="#source-input-tab-content">Edit Source</a></li>
+              <li><a data-toggle="tab" id="display-tab" href="#source-display-tab-content">Show Source</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="source-input-tab-content">
+              <label for="source-input">Type source code below</label> 
+              or <a class="js-example-redis" href="javascript:void(0);">Load Example Script</a>
+              &mdash;
+              <a class="btn js-parse">Parse</a><br />
+              <textarea class="source-code" id="source-input" name="source">
+<%= source %>
+</textarea><br />
+            </div>
+            <div class="tab-pane" id="source-display-tab-content">
+              <pre id="rendered-code" class="source-code"><code><% if (code) { %>
+<%= code %><% } %></pre></code>
+            </div>
+          </div>
+        </div>
+
+      </div>
 
 
 
-  
-  <div class="source-example" id="node_redis__generate_commands">// Copied from https://raw.github.com/mranney/node_redis/master/generate_commands.js
+      
+    </div>
+
+    <!-- ignore me -->
+    <div class="source-example" id="node_redis__generate_commands">// Copied from https://raw.github.com/mranney/node_redis/master/generate_commands.js
 var http = require("http"),
-    fs = require("fs");
+fs = require("fs");
 
 function prettyCurrentTime() {
-    var date = new Date();
-    return date.toLocaleString();
+  var date = new Date();
+  return date.toLocaleString();
 }
 
 function write_file(commands, path) {
-    var file_contents, out_commands;
+  var file_contents, out_commands;
 
-    console.log("Writing " + Object.keys(commands).length + " commands to " + path);
+  console.log("Writing " + Object.keys(commands).length + " commands to " + path);
 
-    file_contents = "// This file was generated by ./generate_commands.js on " + prettyCurrentTime() + "\n";
+  file_contents = "// This file was generated by ./generate_commands.js on " + prettyCurrentTime() + "\n";
 
-    out_commands = Object.keys(commands).map(function (key) {
-        return key.toLowerCase();
-    });
+  out_commands = Object.keys(commands).map(function (key) {
+    return key.toLowerCase();
+  });
 
-    file_contents += "module.exports = " + JSON.stringify(out_commands, null, "    ") + ";\n";
+  file_contents += "module.exports = " + JSON.stringify(out_commands, null, "    ") + ";\n";
 
-    fs.writeFile(path, file_contents);
+  fs.writeFile(path, file_contents);
 }
 
 http.get({host: "redis.io", path: "/commands.json"}, function (res) {
-    var body = "";
+  var body = "";
 
-    console.log("Response from redis.io/commands.json: " + res.statusCode);
+  console.log("Response from redis.io/commands.json: " + res.statusCode);
 
-    res.on('data', function (chunk) {
-        body += chunk;
-    });
+  res.on('data', function (chunk) {
+    body += chunk;
+  });
 
-    res.on('end', function () {
-        write_file(JSON.parse(body), "lib/commands.js");
-    });
+  res.on('end', function () {
+    write_file(JSON.parse(body), "lib/commands.js");
+  });
 }).on('error', function (e) {
-    console.log("Error fetching command list from redis.io: " + e.message);
+  console.log("Error fetching command list from redis.io: " + e.message);
 });
-  </div>
+    </div>
+    <!-- ignore me -->
 
   </body>
 </html>

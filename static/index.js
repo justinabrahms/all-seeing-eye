@@ -49,18 +49,17 @@ function output($el, rules) {
   var $lis = _.map(rules, function (rule) {
     var $li = $('<li>');
     $li.append(
+      $('<a>', {
+        href: "javascript:void(0)",
+        class: "js-remove-rule pull-right",
+        text: "Delete"
+      }));
+    $li.append(
       $('<span>', {
         text: rule.selector,
         style: "color: " + rule.color,
         class: 'rule'
       }));
-    $li.append(
-      $('<a>', {
-        href: "javascript:void(0)",
-        class: "js-remove-rule",
-        text: "Delete"
-      })
-    );
     return $li;
   });
   $el.append($lis);
@@ -77,7 +76,7 @@ function bindEvents () {
 
   $('.js-parse').click(function (e) {
     var rules = _.invoke(masterRuleList, 'toJSON');
-    var source = $('#source').val();
+    var source = $('#source-input').val();
     $.ajax({
       url: "/",
       method: "POST",
@@ -87,17 +86,22 @@ function bindEvents () {
       }
     }).done(function (data) {
       $('#rendered-code code').html(data);
+      $('#display-tab').tab('show');
     });
   });
 
   $('.js-example-redis').click(function (e) {
-    $('#source').text(
+    $('#source-input').text(
       $('#node_redis__generate_commands').text());
   });
 
   $('.example-rules').click(function (e) {
+    var rule = $(e.target).data('rule');
+    if (!rule) {
+      return;
+    }
     var ruleList = addRule(
-      $(e.target).data('rule'),
+      rule,
       randColor());
     output($('.rule-list'), ruleList);
   });
@@ -113,6 +117,10 @@ function bindEvents () {
     $color.val("");
   });
 
+  $('.nav-tabs a').click(function (e) {
+    e.preventDefault();
+    $(this).tab('show');
+  });
 }
 
 $(document).ready(bindEvents);
