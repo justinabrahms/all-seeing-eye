@@ -101,6 +101,7 @@ exports.multiRangeInsert = function multiRangeInsert(origin, rangeStringMapList)
 };
 
 router.post('/', function (req, res) {
+  console.log('Oooh, new things to parse!');
   var form = formidable.IncomingForm();
   form.parse(req, function (err, fields, files) {
     console.log("rules: ", fields.rules);
@@ -134,6 +135,7 @@ router.post('/', function (req, res) {
 });
 
 router.get('/', function (req, res) {
+  console.log('got request for homepage');
   render(res, './main_page.html');
 });
 
@@ -155,6 +157,7 @@ function render(res, filename, json) {
 
 server.listen(port, function(err) {
   if (err) { console.error(err); process.exit(-1); }
+  console.log("Working from: ", process.cwd());
 
   // if run as root, downgrade to the owner of this file
   if (process.getuid() === 0) {
