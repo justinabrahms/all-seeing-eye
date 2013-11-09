@@ -3,15 +3,27 @@ require('nko')('kVbGmDAzdXwE6h5y');
 
 var isProduction = (process.env.NODE_ENV === 'production');
 var http = require('http');
+var router = require('flask-router')();
+var server = http.createServer(router.route);
 var port = (isProduction ? 80 : 8000);
 
-http.createServer(function (req, res) {
-  // http://blog.nodeknockout.com/post/35364532732/protip-add-the-vote-ko-badge-to-your-app
-  var voteko = '<iframe src="http://nodeknockout.com/iframe/all-seeing-eye" frameborder=0 scrolling=no allowtransparency=true width=115 height=25></iframe>';
 
+router.get('/', function (req, res) {
+  console.log('awww yiss');
   res.writeHead(200, {'Content-Type': 'text/html'});
-  res.end('<html><body>' + voteko + '</body></html>\n');
-}).listen(port, function(err) {
+  res.write("<html><body>" +
+            "<form>" +
+            "<label for='rule'>Rule:</label><input type='text' id='rule' name='rule' /><br />" + 
+            "<label for='source'>Source Code</label><textarea id='source' name='source'></textarea><br />" +
+            "<button type='submit'>Parse</button>" +
+            "</form>" +
+            "</body></html>");
+  res.end();
+});
+
+
+
+server.listen(port, function(err) {
   if (err) { console.error(err); process.exit(-1); }
 
   // if run as root, downgrade to the owner of this file
