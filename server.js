@@ -13,10 +13,10 @@ var fs = require('fs');
 var port = (isProduction ? 80 : 8000);
 
 /*
-  TODO: Real template language
   TODO: Real design
   TODO: 302 Redirect on post
   TODO: Saving results
+  TODO: Support color-pickers.
 */
 
 function matchingNodes(selector, content) {
@@ -39,7 +39,7 @@ function render(res, filename, json) {
     rule: ''
   });
   fs.readFile(filename, function (err, data) {
-    var contents = new String(data);
+    var contents = ""+data;
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.write(_.template(contents, json));
     res.end();
@@ -76,7 +76,7 @@ router.post('/', function (req, res) {
   var form = formidable.IncomingForm();
   form.parse(req, function (err, fields, files) {
     console.log("rules: ", fields.rules);
-    var selector = JSON.parse(fields.rules)[0].selector;
+    var selector = _.pluck(JSON.parse(fields.rules), 'selector').join(',');
     var inputText = fields.source;
     var origText = inputText.slice(0);
     try {
