@@ -8,6 +8,10 @@
   min-height: 200px;
 }
 
+#rendered-code {
+  margin-top: 10px;
+}
+
 .source-example {
   display: none;
 }
