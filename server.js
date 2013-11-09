@@ -29,7 +29,7 @@ function serveFromPrefix (prefix, path, res) {
       res.write(""+data);
     }
     res.end();
-  })
+  });
 }
 
 router.get('/static/<path:path>', function (req, res) {
@@ -104,29 +104,28 @@ router.post('/', function (req, res) {
   var form = formidable.IncomingForm();
   form.parse(req, function (err, fields, files) {
     console.log("rules: ", fields.rules);
-    var selector = _.pluck(JSON.parse(fields.rules), 'selector').join(',');
+    var rules = JSON.parse(fields.rules);
     var inputText = fields.source;
     var origText = inputText.slice(0);
+    var rangeMaps;
     try {
-      var found = matchingNodes(selector, inputText);
-      var ranges = _.pluck(found, 'range');
-      var currentOffset = 0;
-      _.each(ranges, function (rangePair) {
-        var start = rangePair[0];
-        var end = rangePair[1];
-
-        var startOffset = start + currentOffset;
-        inputText = insertAtIndex(inputText, START, startOffset);
-        currentOffset += START.length;
-
-        var endOffset = end + currentOffset;
-        inputText = insertAtIndex(inputText, END, endOffset);
-        currentOffset += END.length;
-      });
+      rangeMaps = _.flatten(_.map(rules, function (rules) {
+        var matched = matchingNodes(rules.selector, inputText);
+        var ranges = _.pluck(matched, 'range');
+        return _.map(ranges, function (r) {
+          return {
+            start: r[0],
+            end: r[1],
+            startString: "<b style='color:" + rules.color + "'>",
+            endString: "</b>"
+          };
+        });
+      }));
     } catch (e) {
-      // error parsing information.
       inputText = e;
     }
+
+    inputText = exports.multiRangeInsert(inputText, rangeMaps);
 
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.write(""+inputText);
@@ -151,7 +150,7 @@ function render(res, filename, json) {
     res.write(_.template(contents, json));
     res.end();
   });
-};
+}
 
 
 server.listen(port, function(err) {
