@@ -12,7 +12,6 @@ Rule.prototype.toJSON = function () {
 
 var masterRuleList = [];
 
-
 // a lame attempt at generating pseudo random colors that don't clash.
 var hRange = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360];
 var lRange = [25, 50, 75];
@@ -37,8 +36,11 @@ function randColor() {
 }
 
 
-function addRule(ruleText) {
-  masterRuleList.push(new Rule(ruleText, randColor()));
+function addRule(ruleText, color) {
+  if (!color) {
+    color = randColor();
+  }
+  masterRuleList.push(new Rule(ruleText, color));
   return masterRuleList;
 }
 
@@ -91,9 +93,12 @@ function bindEvents () {
   $('.js-add-rule').click(function (e) {
     var $rule = $('#rule') ;
     var rule = $rule.val();
-    var ruleList = addRule(rule);
+    var $color = $('#color');
+    var color = $color.val();
+    var ruleList = addRule(rule, color);
     output($('.rule-list'), ruleList);
     $rule.val("");
+    $color.val("");
   });
 
 }
