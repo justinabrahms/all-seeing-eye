@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "nko": "*",
-    "flask-router": "0.0.4"
+    "flask-router": "0.0.4",
+    "cssauron-falafel": "~1.0.0",
+    "falafel": "~0.3.1"
   },
   "engines": {
     "node": "0.10.x"
