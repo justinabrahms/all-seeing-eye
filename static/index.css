@@ -1,0 +1,14 @@
+.rule-form {
+  width: 587px;
+  float: left;
+}
+
+#rendered-code {
+  width: 580px;
+  float: left;
+  margin-left: 30px;
+}
+
+.pull-right {
+  float: right;
+}

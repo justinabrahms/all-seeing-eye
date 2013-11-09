@@ -46,6 +46,28 @@ function render(res, filename, json) {
   });
 };
 
+
+function serveFromPrefix (prefix, path, res) {
+  var toServe = prefix + path;
+  console.log("attempting to serve: ", toServe);
+  fs.readFile(toServe, function (err, data) {
+    if (err) {
+      res.write("Error parsing request. " + err);
+    } else {
+      res.write(""+data);
+    }
+    res.end();
+  })
+}
+
+router.get('/static/<path:path>', function (req, res) {
+  return serveFromPrefix('./static/', req.params.path, res);
+});
+
+router.get('/bower/<path:path>', function (req, res) {
+  return serveFromPrefix('./bower_components/', req.params.path, res);
+});
+
 function insertAtIndex(origin, toInsert, index) {
   return origin.slice(0, index) + toInsert + origin.slice(index);
 }
@@ -53,8 +75,8 @@ function insertAtIndex(origin, toInsert, index) {
 router.post('/', function (req, res) {
   var form = formidable.IncomingForm();
   form.parse(req, function (err, fields, files) {
-    // read in text.
-    var selector = fields.rule;
+    console.log("rules: ", fields.rules);
+    var selector = JSON.parse(fields.rules)[0].selector;
     var inputText = fields.source;
     var origText = inputText.slice(0);
     try {
@@ -78,12 +100,17 @@ router.post('/', function (req, res) {
       inputText = e;
     }
 
-    // output text on page.
-    render(res, './main_page.html', {
-      code: inputText,
-      source: origText,
-      rule: selector
-    });
+    // @@@ Check header for json. If so, don't render whole page.
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write(""+inputText);
+    res.end();
+
+    // // output text on page.
+    // render(res, './main_page.html', {
+    //   code: inputText,
+    //   source: origText,
+    //   rule: selector
+    // });
   });
 });
 

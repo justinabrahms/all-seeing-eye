@@ -1,18 +1,27 @@
 <html>
+
+  <head>
+    <title>Mordor.js: One does not simply check in code</title>
+    <link href="/static/index.css" rel="stylesheet">
+    <script src="/bower/jquery/jquery.js" type="text/javascript"></script>
+    <script src="/bower/lodash/dist/lodash.js" type="text/javascript"></script>
+    <script src="/static/index.js" type="text/javascript"></script>
+  </head>
+
   <body>
     <h1>Regex builder for source code</h1>
-
-    
-    
-    <form method='post' action='/'> 
+    <form method='post' action='/' class="rule-form">
+      <ul class='rule-list'></ul>
       <label for='rule'>Rule:</label><input type='text' id='rule' name='rule' value="<%- rule %>"/><br />
-      <label for='source'>Source Code</label><textarea id='source' name='source'><%= source %></textarea><br />
-      <button type='submit'>Parse</button>
+      <a class='btn js-add-rule'>Add Rule</a>
+      <br />
+      <label for='source'>Source Code</label>
+      &mdash;
+      <a class="btn js-parse">Parse</a><br />
+      <textarea rows="30" cols="80" id='source' name='source'><%= source %></textarea><br />
     </form>
-    <div id="rendered-code">
-      <pre><code>
+    <pre id="rendered-code"><code>
 <%= code %>
-      </pre></code>
-    </div>
+    </pre></code>
   </body>
 </html>
