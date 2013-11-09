@@ -95,6 +95,13 @@ function bindEvents () {
       $('#node_redis__generate_commands').text());
   });
 
+  $('.example-rules').click(function (e) {
+    var ruleList = addRule(
+      $(e.target).data('rule'),
+      randColor());
+    output($('.rule-list'), ruleList);
+  });
+
   $('.js-add-rule').click(function (e) {
     var $rule = $('#rule') ;
     var rule = $rule.val();
