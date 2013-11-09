@@ -11,7 +11,6 @@ Rule.prototype.toJSON = function () {
 };
 
 var masterRuleList = [];
-var source = "";
 
 function addRule(ruleText) {
   masterRuleList.push(new Rule(ruleText, null));
@@ -26,8 +25,10 @@ function output($el, rules) {
       $('<span>', {
         text: rule.selector, 
         class: 'rule'
-      }),
-      $('<a href="javascript:void(0)">', {
+      }));
+    $li.append(
+      $('<a>', {
+        href: "javascript:void(0)",
         class: "js-remove-rule",
         text: "Delete"
       })
@@ -38,7 +39,11 @@ function output($el, rules) {
 }
 
 function bindEvents () {
-  $('.rule-list .js-remove-rule').click(function (e) {
+
+  $('.rule-list').on('click', '.js-remove-rule', function (e) {
+    masterRuleList = _.filter(masterRuleList, function (rule) {
+      return $(e.target).closest('.rule').text() == rule.selector;
+    });
     $(e.target).parent('li').remove();
   });
 
@@ -60,12 +65,11 @@ function bindEvents () {
   $('.js-add-rule').click(function (e) {
     var $rule = $('#rule') ;
     var rule = $rule.val();
-
     var ruleList = addRule(rule);
     output($('.rule-list'), ruleList);
-    
     $rule.val("");
   });
+
 }
 
 $(document).ready(bindEvents);
