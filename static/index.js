@@ -12,8 +12,33 @@ Rule.prototype.toJSON = function () {
 
 var masterRuleList = [];
 
+
+// a lame attempt at generating pseudo random colors that don't clash.
+var hRange = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360];
+var lRange = [25, 50, 75];
+var ranges = _.shuffle(function () {
+  var x = [];
+  _.each(hRange, function (h) {
+    return _.each(lRange, function (l) {
+      x.push([h, '100%', l+'%']);
+    });
+  });
+  return x;
+}());
+
+function randColor() {
+  // TODO(justinabrahms): Find a better way to generate colors,
+  // preferrably within a theme.
+  var val = ranges.shift();
+  return "hsl(" +
+    val[0] +  ", " +
+    val[1] + ", " +
+    val[2] + ");";
+}
+
+
 function addRule(ruleText) {
-  masterRuleList.push(new Rule(ruleText, null));
+  masterRuleList.push(new Rule(ruleText, randColor()));
   return masterRuleList;
 }
 
@@ -23,7 +48,8 @@ function output($el, rules) {
     var $li = $('<li>');
     $li.append(
       $('<span>', {
-        text: rule.selector, 
+        text: rule.selector,
+        style: "color: " + rule.color,
         class: 'rule'
       }));
     $li.append(

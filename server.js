@@ -14,37 +14,9 @@ var port = (isProduction ? 80 : 8000);
 
 /*
   TODO: Real design
-  TODO: 302 Redirect on post
   TODO: Saving results
   TODO: Support color-pickers.
 */
-
-function matchingNodes(selector, content) {
-  var found = [];
-  falafel(content, function (node) {
-    if (csf(selector)(node)) {
-      found.push(node);
-    }
-  });
-  return found;
-}
-
-var START  = '<b>';
-var END = '</b>';
-
-function render(res, filename, json) {
-  json = _.defaults(json || {}, {
-    code: '',
-    source: '',
-    rule: ''
-  });
-  fs.readFile(filename, function (err, data) {
-    var contents = ""+data;
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write(_.template(contents, json));
-    res.end();
-  });
-};
 
 
 function serveFromPrefix (prefix, path, res) {
@@ -67,6 +39,20 @@ router.get('/static/<path:path>', function (req, res) {
 router.get('/bower/<path:path>', function (req, res) {
   return serveFromPrefix('./bower_components/', req.params.path, res);
 });
+
+function matchingNodes(selector, content) {
+  var found = [];
+  falafel(content, function (node) {
+    if (csf(selector)(node)) {
+      found.push(node);
+    }
+  });
+  return found;
+}
+
+var START  = '<b>';
+var END = '</b>';
+
 
 function insertAtIndex(origin, toInsert, index) {
   return origin.slice(0, index) + toInsert + origin.slice(index);
@@ -100,23 +86,31 @@ router.post('/', function (req, res) {
       inputText = e;
     }
 
-    // @@@ Check header for json. If so, don't render whole page.
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.write(""+inputText);
     res.end();
-
-    // // output text on page.
-    // render(res, './main_page.html', {
-    //   code: inputText,
-    //   source: origText,
-    //   rule: selector
-    // });
   });
 });
 
 router.get('/', function (req, res) {
   render(res, './main_page.html');
 });
+
+
+function render(res, filename, json) {
+  json = _.defaults(json || {}, {
+    code: '',
+    source: '',
+    rule: ''
+  });
+  fs.readFile(filename, function (err, data) {
+    var contents = ""+data;
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write(_.template(contents, json));
+    res.end();
+  });
+};
+
 
 server.listen(port, function(err) {
   if (err) { console.error(err); process.exit(-1); }
