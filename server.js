@@ -8,6 +8,7 @@ var server = http.createServer(router.route);
 var csf = require('cssauron-falafel');
 var falafel = require('falafel');
 var _ = require('underscore');
+var formidable = require('formidable');
 var port = (isProduction ? 80 : 8000);
 
 /*
@@ -27,27 +28,44 @@ function matchingNodes(selector, content) {
   return found;
 }
 
+var START  = '<b>';
+var END = '</b>';
+
 function render(res, txt) {
   res.writeHead(200, {'Content-Type': 'text/html'});
   res.write(txt);
   return res;
 };
 
+function insertAtIndex(origin, toInsert, index) {
+  return origin.slice(0, index) + toInsert + origin.slice(index);
+}
+
 router.post('/parse', function (req, res) {
-  var selector = 'variable-decl';
-  // read in text.
-  var inputText = "var x = 9;\nif (x > 2) {\n  console.log('got it');\n}\n";
-  // run selector on text.
-  var found = matchingNodes(selector, inputText);
-  // build mapping of matched nodes to string offsets
-  var ranges = _.pluck(found, 'range');
+  var form = formidable.IncomingForm();
+  form.parse(req, function (err, fields, files) {
+    // read in text.
+    var selector = fields.rule;
+    var inputText = fields.source;
+    var found = matchingNodes(selector, inputText);
+    var ranges = _.pluck(found, 'range');
+    var currentOffset = 0;
+    _.each(ranges, function (rangePair) {
+      var start = rangePair[0];
+      var end = rangePair[1];
 
-  console.log('ranges: ', ranges);
-  // turn mapping into text decoration
-  var text ='wee!';
+      var startOffset = start + currentOffset;
+      inputText = insertAtIndex(inputText, START, startOffset);
+      currentOffset += START.length;
 
-  // output text on page.
-  render(res, text).end();
+      var endOffset = end + currentOffset;
+      inputText = insertAtIndex(inputText, END, endOffset);
+      currentOffset += END.length;
+    });
+
+    // output text on page.
+    render(res, "<pre><code>" + inputText + "</code></pre>").end();
+  });
 });
 
 router.get('/', function (req, res) {
