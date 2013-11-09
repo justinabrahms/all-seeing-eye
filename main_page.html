@@ -11,20 +11,20 @@
 
   <body>
     <h1>Regex builder for source code</h1>
-    <form method='post' action='/' class="rule-form">
+    <form method="post" action="/" class="rule-form">
       <iframe src="http://nodeknockout.com/iframe/all-seeing-eye" frameborder=0 scrolling=no allowtransparency=true width=115 height=25>
       </iframe>
-      <ul class='rule-list'></ul>
-      <label for='rule'>Rule:</label><input type='text' id='rule' name='rule' value="<%- rule %>"/>
-      <input type="color" id='color' name='color'  />
-      <a class='btn js-add-rule'>Add Rule</a>
+      <ul class="rule-list"></ul>
+      <label for="rule">Rule:</label><input type="text" id="rule" name="rule" value="<%- rule %>"/>
+      <input type="color" id="color" name="color"  />
+      <a class="btn js-add-rule">Add Rule</a>
       <br />
-      <a class='js-example-redis' href="javascript:void(0);">Load Example Script</a>
+      <a class="js-example-redis" href="javascript:void(0);">Load Example Script</a>
       <br />
-      <label for='source'>Source Code</label>
+      <label for="source">Source Code</label>
       &mdash;
       <a class="btn js-parse">Parse</a><br />
-      <textarea rows="30" cols="80" id='source' name='source'><%= source %></textarea><br />
+      <textarea rows="30" cols="80" id="source" name="source"><%= source %></textarea><br />
     </form>
     <pre id="rendered-code"><code>
 <%= code %>
