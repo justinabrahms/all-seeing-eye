@@ -114,7 +114,7 @@ function bindEvents () {
     var ruleList = addRule(rule, color);
     output($('.rule-list'), ruleList);
     $rule.val("");
-    $color.val("");
+    $color.val("#cc0099");
   });
 
   $('.nav-tabs a').click(function (e) {
@@ -123,4 +123,8 @@ function bindEvents () {
   });
 }
 
+/*
+TODO: disable tabs until user activates.
+TODO: something page-guide-esque.
+*/
 $(document).ready(bindEvents);

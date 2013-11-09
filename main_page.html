@@ -34,7 +34,7 @@
           <form method="post" action="/" class="rule-form" role="form">
             <p class="example-rules">
               Choose a CSS selector below and the color you'd like it to be highlighted as or try some examples: 
-              <a href="javascript:void(0)" data-rule="variable > id">highlight variable names</a> or
+              <a href="javascript:void(0)" data-rule="variable > id">highlight variable names</a>, <a href="javascript:void(0)" data-rule="function !*:first-child + block">all 0 argument functions</a> or
               <a href="javascript:void(0)" data-rule="call:contains(writeFile)">higlight calls to writeFile</a>
             </p>
             <ul class="rule-list"></ul>
@@ -46,7 +46,7 @@
               <button type="button" class="btn pull-right js-add-rule">Add Rule</button>
               <div class="form-group">
                 <label for="color">Color</label>
-                <input type="color" id="color" name="color"  />
+                <input type="color" id="color" name="color" value="#cc0099" />
               </div>
             </div>
           </form>
@@ -57,7 +57,9 @@
           <ul class="nav nav-tabs">
               <li><a data-toggle="tab" id="edit-tab" href="#source-input-tab-content">Edit Source</a></li>
               <li><a data-toggle="tab" id="display-tab" href="#source-display-tab-content">Show Source</a></li>
+              <li><a data-toggle="tab" id="node-tab" href="#node-list-content">Node List</a></li>
           </ul>
+
           <div class="tab-content">
             <div class="tab-pane active" id="source-input-tab-content">
               <label for="source-input">Type source code below</label> 
@@ -68,9 +70,13 @@
 <%= source %>
 </textarea><br />
             </div>
+
             <div class="tab-pane" id="source-display-tab-content">
               <pre id="rendered-code" class="source-code"><code><% if (code) { %>
 <%= code %><% } %></pre></code>
+            </div>
+
+            <div class="tab-pane" id="node-list-content">
             </div>
           </div>
         </div>

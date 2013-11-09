@@ -14,7 +14,6 @@ var port = (isProduction ? 80 : 8000);
 var basePath = (isProduction ? '/home/deploy/current/' : './');
 
 /*
-  TODO: Real design
   TODO: Saving results
 */
 
@@ -43,7 +42,8 @@ router.get('/bower/<path:path>', function (req, res) {
 function matchingNodes(selector, content) {
   var found = [];
   falafel(content, function (node) {
-    if (csf(selector)(node)) {
+    // assigning this here will return a possible list of node with the `!` operator
+    if ((node = csf(selector)(node))) {
       found.push(node);
     }
   });
