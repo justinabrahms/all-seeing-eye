@@ -9,6 +9,7 @@ var csf = require('cssauron-falafel');
 var falafel = require('falafel');
 var _ = require('underscore');
 var formidable = require('formidable');
+var fs = require('fs');
 var port = (isProduction ? 80 : 8000);
 
 /*
@@ -31,10 +32,18 @@ function matchingNodes(selector, content) {
 var START  = '<b>';
 var END = '</b>';
 
-function render(res, txt) {
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.write(txt);
-  return res;
+function render(res, filename, json) {
+  json = _.defaults(json || {}, {
+    code: '',
+    source: '',
+    rule: ''
+  });
+  fs.readFile(filename, function (err, data) {
+    var contents = new String(data);
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write(_.template(contents, json));
+    res.end();
+  });
 };
 
 function insertAtIndex(origin, toInsert, index) {
@@ -47,36 +56,39 @@ router.post('/parse', function (req, res) {
     // read in text.
     var selector = fields.rule;
     var inputText = fields.source;
-    var found = matchingNodes(selector, inputText);
-    var ranges = _.pluck(found, 'range');
-    var currentOffset = 0;
-    _.each(ranges, function (rangePair) {
-      var start = rangePair[0];
-      var end = rangePair[1];
+    var origText = inputText.slice(0);
+    try {
+      var found = matchingNodes(selector, inputText);
+      var ranges = _.pluck(found, 'range');
+      var currentOffset = 0;
+      _.each(ranges, function (rangePair) {
+        var start = rangePair[0];
+        var end = rangePair[1];
 
-      var startOffset = start + currentOffset;
-      inputText = insertAtIndex(inputText, START, startOffset);
-      currentOffset += START.length;
+        var startOffset = start + currentOffset;
+        inputText = insertAtIndex(inputText, START, startOffset);
+        currentOffset += START.length;
 
-      var endOffset = end + currentOffset;
-      inputText = insertAtIndex(inputText, END, endOffset);
-      currentOffset += END.length;
-    });
+        var endOffset = end + currentOffset;
+        inputText = insertAtIndex(inputText, END, endOffset);
+        currentOffset += END.length;
+      });
+    } catch (e) {
+      // error parsing information.
+      inputText = e;
+    }
 
     // output text on page.
-    render(res, "<pre><code>" + inputText + "</code></pre>").end();
+    render(res, './main_page.html', {
+      code: inputText,
+      source: origText,
+      rule: selector
+    });
   });
 });
 
 router.get('/', function (req, res) {
-  render(res, "<html><body>" +
-         "<form method='post' action='/parse'>" +
-         "<label for='rule'>Rule:</label><input type='text' id='rule' name='rule' /><br />" + 
-         "<label for='source'>Source Code</label><textarea id='source' name='source'></textarea><br />" +
-         "<button type='submit'>Parse</button>" +
-         "</form>" +
-         "</body></html>");
-  res.end();
+  render(res, './main_page.html');
 });
 
 server.listen(port, function(err) {

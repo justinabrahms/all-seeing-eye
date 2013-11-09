@@ -1,0 +1,18 @@
+<html>
+  <body>
+    <h1>Regex builder for source code</h1>
+
+    
+    
+    <form method='post' action='/parse'> 
+      <label for='rule'>Rule:</label><input type='text' id='rule' name='rule' value="<%- rule %>"/><br />
+      <label for='source'>Source Code</label><textarea id='source' name='source'><%= source %></textarea><br />
+      <button type='submit'>Parse</button>
+    </form>
+    <div id="rendered-code">
+      <pre><code>
+<%= code %>
+      </pre></code>
+    </div>
+  </body>
+</html>
