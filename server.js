@@ -54,9 +54,51 @@ var START  = '<b>';
 var END = '</b>';
 
 
-function insertAtIndex(origin, toInsert, index) {
+exports.insertAtIndex = function insertAtIndex(origin, toInsert, index) {
+  if (toInsert.length === 0) {
+    return origin;
+  }
   return origin.slice(0, index) + toInsert + origin.slice(index);
-}
+};
+
+exports.insertOnRange = function insertOnRange(origin, range, startStr, endStr) {
+  return exports.insertAtIndex(
+    exports.insertAtIndex(origin, startStr, range[0]),
+    endStr, (range[1] + startStr.length));
+};
+
+// rangeStringMapList = [{start: int, startString: string, end: int, endString: string}, ...]
+exports.multiRangeInsert = function multiRangeInsert(origin, rangeStringMapList) {
+  // list of inserts. the original insert point and how much text was inserted.
+  // each element looks like: [0, 14] which is the position inserted, and number of characters
+  var inserted = [
+    
+  ];
+
+  var offsetForPos = function (pos) {
+    var amount = 0;
+    
+    _.each(inserted, function (seen) {
+      if (seen[0] < pos) {
+        amount += seen[1];
+      }
+    });
+
+    return amount;
+  };
+
+  _.each(rangeStringMapList, function (rsm) {
+    
+    var range = [];
+    range.push(rsm.start + offsetForPos(rsm.start));
+    range.push(rsm.end + offsetForPos(rsm.end));
+    inserted.push([rsm.start, rsm.startString.length]);
+    inserted.push([rsm.end, rsm.endString.length]);
+    
+    origin = exports.insertOnRange(origin, range, rsm.startString, rsm.endString);
+  });
+  return origin;
+};
 
 router.post('/', function (req, res) {
   var form = formidable.IncomingForm();
