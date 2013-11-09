@@ -11,39 +11,53 @@ var _ = require('underscore');
 var port = (isProduction ? 80 : 8000);
 
 /*
-TODO: Real template language
-TODO: Real design
-TODO: 302 Redirect on post
-TODO: Saving results
+  TODO: Real template language
+  TODO: Real design
+  TODO: 302 Redirect on post
+  TODO: Saving results
 */
 
 function matchingNodes(selector, content) {
   var found = [];
-  falafel(src, function (node) {
-    if (csf(pattern)(node) {
+  falafel(content, function (node) {
+    if (csf(selector)(node)) {
       found.push(node);
     }
   });
   return found;
 }
 
+function render(res, txt) {
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.write(txt);
+  return res;
+};
+
 router.post('/parse', function (req, res) {
+  var selector = 'variable-decl';
   // read in text.
+  var inputText = "var x = 9;\nif (x > 2) {\n  console.log('got it');\n}\n";
   // run selector on text.
+  var found = matchingNodes(selector, inputText);
   // build mapping of matched nodes to string offsets
+  var ranges = _.pluck(found, 'range');
+
+  console.log('ranges: ', ranges);
   // turn mapping into text decoration
+  var text ='wee!';
+
   // output text on page.
+  render(res, text).end();
 });
 
 router.get('/', function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.write("<html><body>" +
-            "<form method='post' action='/parse'>" +
-            "<label for='rule'>Rule:</label><input type='text' id='rule' name='rule' /><br />" + 
-            "<label for='source'>Source Code</label><textarea id='source' name='source'></textarea><br />" +
-            "<button type='submit'>Parse</button>" +
-            "</form>" +
-            "</body></html>");
+  render(res, "<html><body>" +
+         "<form method='post' action='/parse'>" +
+         "<label for='rule'>Rule:</label><input type='text' id='rule' name='rule' /><br />" + 
+         "<label for='source'>Source Code</label><textarea id='source' name='source'></textarea><br />" +
+         "<button type='submit'>Parse</button>" +
+         "</form>" +
+         "</body></html>");
   res.end();
 });
 
