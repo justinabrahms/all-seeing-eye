@@ -11,11 +11,11 @@ var _ = require('underscore');
 var formidable = require('formidable');
 var fs = require('fs');
 var port = (isProduction ? 80 : 8000);
+var basePath = (isProduction ? '/home/deploy/current/' : './');
 
 /*
   TODO: Real design
   TODO: Saving results
-  TODO: Support color-pickers.
 */
 
 
@@ -33,11 +33,11 @@ function serveFromPrefix (prefix, path, res) {
 }
 
 router.get('/static/<path:path>', function (req, res) {
-  return serveFromPrefix('./static/', req.params.path, res);
+  return serveFromPrefix(basePath + 'static/', req.params.path, res);
 });
 
 router.get('/bower/<path:path>', function (req, res) {
-  return serveFromPrefix('./bower_components/', req.params.path, res);
+  return serveFromPrefix(basePath + 'bower_components/', req.params.path, res);
 });
 
 function matchingNodes(selector, content) {
@@ -136,7 +136,7 @@ router.post('/', function (req, res) {
 
 router.get('/', function (req, res) {
   console.log('got request for homepage');
-  render(res, './main_page.html');
+  render(res, basePath + '/main_page.html');
 });
 
 
