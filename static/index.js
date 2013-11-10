@@ -50,7 +50,7 @@ function output($el, rules) {
     var $li = $('<li>');
     $li.append(
       $('<a>', {
-        href: "javascript:void(0)",
+        href: "javascript:void(0)", // jshint ignore:line
         class: "js-remove-rule pull-right",
         text: "Delete"
       }));
@@ -63,6 +63,21 @@ function output($el, rules) {
     return $li;
   });
   $el.append($lis);
+}
+
+function renderNodes(nodeList) {
+  var $dl = $("<dl>");
+  _.each(nodeList, function (n) {
+    $dl.append($('<dt />', {text: n.selector}));
+    $dl.append(
+      $('<dd>'+ 
+        '<textarea style="display: none;" name="json">' + n.nodes + '</textarea>' +
+        '<button>View Offsite</button>' +
+        "</dd>"));
+  });
+  return '<form action="http://json.parser.online.fr/" method="POST">' + 
+    $dl.html() +
+    '</form>';
 }
 
 function bindEvents () {
@@ -85,8 +100,10 @@ function bindEvents () {
         source: source
       }
     }).done(function (data) {
-      $('#rendered-code code').html(data);
+      var json = JSON.parse(data);
+      $('#rendered-code code').html(json.markedUp);
       $('#display-tab').tab('show');
+      $('.js-node-container').html(renderNodes(json.nodeList));
     });
   });
 

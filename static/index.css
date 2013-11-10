@@ -15,3 +15,7 @@
 .source-example {
   display: none;
 }
+
+.tab-pane {
+  padding-top: 20px;
+}

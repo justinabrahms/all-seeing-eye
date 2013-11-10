@@ -10,6 +10,7 @@ var falafel = require('falafel');
 var _ = require('underscore');
 var formidable = require('formidable');
 var fs = require('fs');
+var CircularJSON = require('circular-json');
 var port = (isProduction ? 80 : 8000);
 var basePath = (isProduction ? '/home/deploy/current/' : './');
 
@@ -103,15 +104,22 @@ exports.multiRangeInsert = function multiRangeInsert(origin, rangeStringMapList)
 router.post('/', function (req, res) {
   console.log('Oooh, new things to parse!');
   var form = formidable.IncomingForm();
+
   form.parse(req, function (err, fields, files) {
     console.log("rules: ", fields.rules);
     var rules = JSON.parse(fields.rules);
     var inputText = fields.source;
     var origText = inputText.slice(0);
+    var nodeList = [];
     var rangeMaps;
+
     try {
       rangeMaps = _.flatten(_.map(rules, function (rules) {
         var matched = matchingNodes(rules.selector, inputText);
+        nodeList.push({
+          selector: rules.selector,
+          nodes: CircularJSON.stringify(matched)
+        });
         var ranges = _.pluck(matched, 'range');
         return _.map(ranges, function (r) {
           return {
@@ -126,10 +134,13 @@ router.post('/', function (req, res) {
       inputText = e;
     }
 
-    inputText = exports.multiRangeInsert(inputText, rangeMaps);
+    var response = {
+      markedUp: exports.multiRangeInsert(inputText, rangeMaps),
+      nodeList: nodeList
+    };
 
     res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write(""+inputText);
+    res.write(JSON.stringify(response));
     res.end();
   });
 });
@@ -138,7 +149,6 @@ router.get('/', function (req, res) {
   console.log('got request for homepage');
   render(res, basePath + '/main_page.html');
 });
-
 
 function render(res, filename, json) {
   json = _.defaults(json || {}, {
