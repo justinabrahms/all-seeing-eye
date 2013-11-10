@@ -72,9 +72,7 @@ exports.insertOnRange = function insertOnRange(origin, range, startStr, endStr) 
 exports.multiRangeInsert = function multiRangeInsert(origin, rangeStringMapList) {
   // list of inserts. the original insert point and how much text was inserted.
   // each element looks like: [0, 14] which is the position inserted, and number of characters
-  var inserted = [
-    
-  ];
+  var inserted = [];
 
   var offsetForPos = function (pos) {
     var amount = 0;

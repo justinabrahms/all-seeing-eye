@@ -1,7 +1,7 @@
 function Rule (selector, color) {
   this.selector = selector;
   this.color = color;
-};
+}
 
 Rule.prototype.toJSON = function () {
   return {
