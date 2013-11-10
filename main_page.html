@@ -32,10 +32,22 @@
       <div class="row">
         <div class="col-md-4">
           <form method="post" action="/" class="rule-form" role="form">
+            <p>
+              This app serves to give a visual representation for
+              querying ASTs. It's similar to a regular expression
+              tester, but it queries the structure of javascript
+              programs instead. These are particularly useful if you
+              want to build programs based
+              on <a href="https://github.com/chrisdickinson/jsl">jsl</a>,
+              the roll-your-own linter
+              or <a href="https://npmjs.org/package/rewrite-js">rewrite-js</a>,
+              which allows you to transform source code at the AST
+              level.
+            </p>
             <p class="example-rules">
-              Choose a CSS selector below and the color you'd like it to be highlighted as or try some examples: 
+              Choose a <a href="http://npmjs.org/package/cssauron-falafel">cssauron-falafel</a> style CSS selector below and the color you'd like it to be highlighted as or try some examples: 
               <a href="javascript:void(0)" data-rule="variable > id">highlight variable names</a>, <a href="javascript:void(0)" data-rule="function !*:first-child + block">all 0 argument functions</a> or
-              <a href="javascript:void(0)" data-rule="call:contains(writeFile)">higlight calls to writeFile</a>
+              <a href="javascript:void(0)" data-rule="call:contains(writeFile)">higlight calls to writeFile</a>.
             </p>
             <ul class="rule-list"></ul>
             <div>
@@ -43,7 +55,7 @@
                 <label for="rule">Selector</label>
                 <input class="form-control" type="text" id="rule" name="rule" value="<%- rule %>"/>
               </div>
-              <button type="button" class="btn pull-right js-add-rule">Add Rule</button>
+              <button type="button" class="btn btn-default pull-right js-add-rule">Add Rule</button>
               <div class="form-group">
                 <label for="color">Color</label>
                 <input type="color" id="color" name="color" value="#cc0099" />
@@ -63,9 +75,8 @@
           <div class="tab-content">
             <div class="tab-pane active" id="source-input-tab-content">
               <label for="source-input">Type source code below</label> 
-              or <a class="js-example-redis" href="javascript:void(0);">Load Example Script</a>
-              &mdash;
-              <a class="btn js-parse">Parse</a><br />
+              or <a class="js-example-redis" href="javascript:void(0);">load an example script</a>
+              &mdash; then <a class="btn btn-xs btn-primary js-parse">Parse</a><br />
               <textarea class="source-code" id="source-input" name="source">
 <%= source %>
 </textarea><br />
@@ -79,7 +90,12 @@
             <div class="tab-pane" id="node-list-content">
               <p>
                 If you want to see what the matched nodes look like,
-                click through to this external site to view them.
+                click a button below to view the JSON representation
+                of the AST node. This is useful if you need to poke
+                around with them
+                in <a href="https://github.com/chrisdickinson/jsl">jsl</a>
+                or <a href="https://npmjs.org/package/rewrite-js">rewrite-js</a>.
+
               </p>
               <div class="js-node-container">
             </div>
