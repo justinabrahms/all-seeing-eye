@@ -1,6 +1,6 @@
 {
   "name": "nko4-all-seeing-eye",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "All Seeing Eye",
   "main": "server.js",
   "scripts": {
