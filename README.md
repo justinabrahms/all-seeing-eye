@@ -39,15 +39,15 @@ Please write tests for additional functionality.
 There are a few things that would be super cool to have. I'd be very
 appreciative if you'd like to contribute to it. Here are some ideas:
 
-- [ ] Ability to save selectors with searchable name
-- [ ] Ability to save selectors & source
-- [ ] Import source from gists
-- [ ] Import source from github repos
-- [ ] JSL integration
-- [ ] rewrite-js integration
-- [ ] Better generation of colors
-- [ ] Live-update colored source code on selector change
-- [ ] Clicking source code element should suggest selectors to use.
+- Ability to save selectors with searchable name
+- Ability to save selectors & source
+- Import source from gists
+- Import source from github repos
+- JSL integration
+- rewrite-js integration
+- Better generation of colors
+- Live-update colored source code on selector change
+- Clicking source code element should suggest selectors to use.
 
 
 ## Changelog
