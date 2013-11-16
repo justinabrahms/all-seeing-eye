@@ -1,6 +1,3 @@
-// https://github.com/nko4/website/blob/master/module/README.md#nodejs-knockout-deploy-check-ins
-require('nko')('kVbGmDAzdXwE6h5y');
-
 var isProduction = (process.env.NODE_ENV === 'production');
 var http = require('http');
 var router = require('flask-router')();

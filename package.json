@@ -11,7 +11,6 @@
     "url": "git@github.com:nko4/all-seeing-eye.git"
   },
   "dependencies": {
-    "nko": "*",
     "flask-router": "0.0.4",
     "cssauron-falafel": "~1.0.0",
     "falafel": "~0.3.1",
