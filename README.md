@@ -46,7 +46,7 @@ appreciative if you'd like to contribute to it. Here are some ideas:
 - JSL integration
 - rewrite-js integration
 - Better generation of colors
-- Live-update colored source code on selector change
+~~- Live-update colored source code on selector change~~
 - Clicking source code element should suggest selectors to use.
 
 
