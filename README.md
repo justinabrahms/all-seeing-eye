@@ -12,7 +12,7 @@ To download and run:
 git clone https://github.com/justinabrahms/all-seeing-eye.git
 cd all-seeing-eye
 npm install .
-node_modules/bower/bin/bower install
+npm run install-client-deps
 node server.js
 ```
 
