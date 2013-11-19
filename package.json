@@ -1,5 +1,5 @@
 {
-  "name": "nko4-all-seeing-eye",
+  "name": "all-seeing-eye",
   "version": "0.1.0",
   "description": "All Seeing Eye",
   "main": "server.js",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:nko4/all-seeing-eye.git"
+    "url": "git@github.com:justinabrahms/all-seeing-eye.git"
   },
   "dependencies": {
     "flask-router": "0.0.4",
