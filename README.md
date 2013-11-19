@@ -19,7 +19,7 @@ node server.js
 To run the tests:
 
 ```sh
-node_modules/mocha/bin/mocha -R spec
+npm test
 ```
 
    
