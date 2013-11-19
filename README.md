@@ -4,6 +4,8 @@ This represents a small site to visualize
 [cssauron-falafel](https://npmjs.org/package/cssauron-falafel)
 selectors.
 
+[![Build Status](https://drone.io/github.com/justinabrahms/all-seeing-eye/status.png)](https://drone.io/github.com/justinabrahms/all-seeing-eye/latest)
+
 ## How go get hacking
 
 To download and run:
