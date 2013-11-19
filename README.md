@@ -8,7 +8,7 @@ selectors.
 
 To download and run:
 
-```sh
+```
 git clone https://github.com/justinabrahms/all-seeing-eye.git
 cd all-seeing-eye
 npm install .
@@ -18,7 +18,7 @@ node server.js
 
 To run the tests:
 
-```sh
+```
 npm test
 ```
 
