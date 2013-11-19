@@ -4,7 +4,8 @@
   "description": "All Seeing Eye",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "install-client-deps": "node_modules/bower/bin/bower install"
   },
   "repository": {
     "type": "git",
