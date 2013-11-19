@@ -13,7 +13,6 @@ var basePath = (isProduction ? '/home/deploy/current/' : './');
 
 function serveFromPrefix (prefix, path, res) {
   var toServe = prefix + path;
-  console.log("attempting to serve: ", toServe);
   fs.readFile(toServe, function (err, data) {
     if (err) {
       res.write("Error parsing request. " + err);
@@ -92,7 +91,6 @@ exports.multiRangeInsert = function multiRangeInsert(origin, rangeStringMapList)
 };
 
 router.post('/', function (req, res) {
-  console.log('Oooh, new things to parse!');
   var form = formidable.IncomingForm();
 
   form.parse(req, function (err, fields, files) {
