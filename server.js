@@ -11,11 +11,6 @@ var CircularJSON = require('circular-json');
 var port = (isProduction ? 80 : 8000);
 var basePath = (isProduction ? '/home/deploy/current/' : './');
 
-/*
-  TODO: Saving results
-*/
-
-
 function serveFromPrefix (prefix, path, res) {
   var toServe = prefix + path;
   console.log("attempting to serve: ", toServe);
