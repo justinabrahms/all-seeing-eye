@@ -8,8 +8,8 @@ var _ = require('underscore');
 var formidable = require('formidable');
 var fs = require('fs');
 var CircularJSON = require('circular-json');
-var port = (isProduction ? 80 : 8000);
 var basePath = (isProduction ? '/home/deploy/current/' : './');
+var port = process.env.PORT || (isProduction ? 80 : 8000);
 
 function serveFromPrefix (prefix, path, res) {
   var toServe = prefix + path;
@@ -130,7 +130,6 @@ router.post('/', function (req, res) {
 });
 
 router.get('/', function (req, res) {
-  console.log('got request for homepage');
   render(res, basePath + 'static/main_page.html');
 });
 
@@ -150,6 +149,7 @@ function render(res, filename, json) {
 
 
 server.listen(port, function(err) {
+  console.log("Starting all-seeing-eye");
   if (err) { console.error(err); process.exit(-1); }
   console.log("Working from: ", process.cwd());
 

@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha -R spec",
     "start": "node server.js",
+    "production-server": "forever start server.js",
     "install-client-deps": "bower install"
   },
   "repository": {
@@ -19,6 +20,7 @@
     "underscore": "~1.5.2",
     "formidable": "~1.0.14",
     "bower": "~1.2.7",
+    "forever": "0.10.9",
     "circular-json": "~0.1.5"
   },
   "engines": {
