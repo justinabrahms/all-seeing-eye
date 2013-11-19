@@ -131,7 +131,7 @@ router.post('/', function (req, res) {
 
 router.get('/', function (req, res) {
   console.log('got request for homepage');
-  render(res, basePath + '/main_page.html');
+  render(res, basePath + 'static/main_page.html');
 });
 
 function render(res, filename, json) {
