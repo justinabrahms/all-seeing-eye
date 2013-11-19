@@ -42,10 +42,6 @@ function matchingNodes(selector, content) {
   return found;
 }
 
-var START  = '<b>';
-var END = '</b>';
-
-
 exports.insertAtIndex = function insertAtIndex(origin, toInsert, index) {
   if (toInsert.length === 0) {
     return origin;
