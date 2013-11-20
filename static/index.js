@@ -112,7 +112,7 @@ function fetchResults () {
   var rules = ruleList.toJSON();
   var source = $('#source-input').val();
   return $.ajax({
-    url: "/",
+    url: window.location,
     method: "POST",
     data: {
       rules: JSON.stringify(rules),
