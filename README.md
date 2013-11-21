@@ -53,6 +53,7 @@ appreciative if you'd like to contribute to it. Here are some ideas:
 
 
 ## Changelog
+- `v0.2`: Support for deployment on other hosts & live reload.
 - `v0.1`: Initial Release of node knockout project
 
 ## Where to get help
